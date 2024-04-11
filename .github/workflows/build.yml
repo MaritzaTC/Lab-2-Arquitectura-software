@@ -34,44 +34,44 @@ jobs:
       - name: Run Tests
         run: mvn -B test
 
-sonar:
-  # The Sonar's Job depends on another job named "tests", which should complete before this job starts.
-  needs: tests
+  sonar:
+    # The Sonar's Job depends on another job named "tests", which should complete before this job starts.
+    needs: tests
 
-  # Specifies that the job runs on the latest version of Ubuntu.
-  runs-on: ubuntu-latest
+    # Specifies that the job runs on the latest version of Ubuntu.
+    runs-on: ubuntu-latest
 
-  # The steps to execute as part of the job.
-  steps:
-    # This step checks out the repository so that it can be used by the workflow.
-    - uses: actions/checkout@v1
+    # The steps to execute as part of the job.
+    steps:
+      # This step checks out the repository so that it can be used by the workflow.
+      - uses: actions/checkout@v1
 
-    # This step sets up Java Development Kit version 11, which is required for running Java applications.
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: '17'
+      # This step sets up Java Development Kit version 11, which is required for running Java applications.
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: '17'
 
-    # This step sets up caching for SonarCloud packages to speed up future runs.
-    - name: Cache SonarCloud packages
-      uses: actions/cache@v1
-      with:
-        path: ~/.sonar/cache
-        key: ${{ runner.os }}-sonar
-        restore-keys: ${{ runner.os }}-sonar
+      # This step sets up caching for SonarCloud packages to speed up future runs.
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}-sonar
+          restore-keys: ${{ runner.os }}-sonar
 
-    # This step sets up caching for Maven packages, which are dependencies of the Java project.
-    - name: Cache Maven packages
-      uses: actions/cache@v1
-      with:
-        path: ~/.m2
-        key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
-        restore-keys: ${{ runner.os }}-m2
+      # This step sets up caching for Maven packages, which are dependencies of the Java project.
+      - name: Cache Maven packages
+        uses: actions/cache@v1
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
-    # This step runs Maven to perform the SonarCloud analysis.
-    - name: Analyze with SonarCloud
-      run: mvn -B verify sonar:sonar -Dsonar.projectKey=MaritzaTC_Lab-2-Arquitectura-software -Dsonar.organization=MaritzaTC -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # This step runs Maven to perform the SonarCloud analysis.
+      - name: Analyze with SonarCloud
+        run: mvn -B verify sonar:sonar -Dsonar.projectKey=MaritzaTC_Lab-2-Arquitectura-software -Dsonar.organization=MaritzaTC -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
