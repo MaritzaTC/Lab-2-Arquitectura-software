@@ -10,7 +10,7 @@ import java.util.Locale;
 
 @RestController
 public class DataController {
-
+    private static final Locale EN_US = new Locale("en-US");
     @GetMapping("/")
     public String healthCheck() {
         return "API is running!";
@@ -24,7 +24,7 @@ public class DataController {
     @GetMapping("/nations")
     public JsonNode getRandomNations() {
         var objectMapper = new ObjectMapper();
-        var faker = new Faker(new Locale("en-US"));
+        var faker = new Faker(EN_US);
         var nations = objectMapper.createArrayNode();
         for (var i = 0; i < 10; i++) {
             var nation = faker.nation();
@@ -39,7 +39,7 @@ public class DataController {
     @GetMapping("/currencies")
     public JsonNode getRandomCurrencies() {
         var objectMapper = new ObjectMapper();
-        var faker = new Faker(new Locale("en-US"));
+        var faker = new Faker(EN_US);
         var currencies = objectMapper.createArrayNode();
         for (var i = 0; i < 20; i++) {
             var currency = faker.currency();
@@ -52,15 +52,15 @@ public class DataController {
     }
 
     @GetMapping("/aviation")
-    public JsonNode getRandomnAviation(){
+    public JsonNode getRandomAviation(){
         var objectMapper = new ObjectMapper();
-        var faker = new Faker(new Locale("en-US"));
+        var faker = new Faker(EN_US);
         var aviations = objectMapper.createArrayNode();
         for(var i=0;i<20;i++){
             var aviation = faker.aviation();
             aviations.add(objectMapper.createObjectNode()
-                    .put("Aircraft",aviation.aircraft())
-                    .put("Airport", aviation.airport())
+                    .put("aircraft",aviation.aircraft())
+                    .put("airport", aviation.airport())
                     .put("METAR", aviation.METAR())
 
             );

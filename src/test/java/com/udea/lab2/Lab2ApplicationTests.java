@@ -37,7 +37,10 @@ class Lab2ApplicationTests {
 	}
 
 	@Test
-	void contextLoads() {
+	void aviationLength() {
+		Integer aviationLength =
+				dataController.getRandomAviation().size();
+		assertEquals(20, aviationLength);
 	}
 
 }
