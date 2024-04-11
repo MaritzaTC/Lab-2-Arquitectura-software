@@ -34,40 +34,51 @@ jobs:
       - name: Run Tests
         run: mvn -B test
 
-  name: SonarCloud
+  name: Sonar's Job
+
   on:
     push:
       branches:
         - main
     pull_request:
-      types: [opened, synchronize, reopened]
+      branches:
+        - main
+
   jobs:
-    build:
-      name: Build and analyze
+    sonar:
+      needs: tests
+      name: SonarCloud analysis
       runs-on: ubuntu-latest
+
       steps:
-        - uses: actions/checkout@v3
+        # Check-out your repository under $GITHUB_WORKSPACE, so your workflow can access it
+        - uses: actions/checkout@v1
+
+        # Set up JDK 11
+        - name: Set up JDK
+          uses: actions/setup-java@v1
           with:
-            fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-        - name: Set up JDK 17
-          uses: actions/setup-java@v3
-          with:
-            java-version: 17
-            distribution: 'zulu' # Alternative distribution options are available.
+            java-version: '11'
+
+        # Set up SonarCloud cache
         - name: Cache SonarCloud packages
-          uses: actions/cache@v3
+          uses: actions/cache@v1
           with:
             path: ~/.sonar/cache
             key: ${{ runner.os }}-sonar
             restore-keys: ${{ runner.os }}-sonar
+
+        # Set up Maven cache
         - name: Cache Maven packages
-          uses: actions/cache@v3
+          uses: actions/cache@v1
           with:
             path: ~/.m2
             key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
             restore-keys: ${{ runner.os }}-m2
-        - name: Build and analyze
+
+        # Analyze project with SonarCloud
+        - name: Analyze with SonarCloud
+          run: mvn -B verify sonar:sonar -Dsonar.projectKey=MaritzaTC_Lab-2-Arquitectura-software -Dsonar.organization=diegobotia -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=$SONAR_TOKEN
           env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=MaritzaTC_Lab-2-Arquitectura-software
