@@ -118,11 +118,11 @@ jobs:
       - name: Checkout source code
         uses: actions/checkout@v2
 
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-            name: artifact
-            path: deploy.zip
+ #     - name: Download artifact
+  #      uses: actions/download-artifact@v2
+  #      with:
+ #           name: artifact
+    #        path: deploy.zip
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v22
@@ -134,4 +134,4 @@ jobs:
           environment_name: Lab2-env
           version_label: 1.0.0
           region: us-east-1
-          deployment_package: deploy.zip
+          deployment_package: deploy2.zip
