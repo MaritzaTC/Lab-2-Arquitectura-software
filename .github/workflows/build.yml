@@ -127,7 +127,10 @@ jobs:
            path: downloads
       
       - name: zip artifact
-        run: zip -r ${{ env.DEPLOY_PACKAGE }} downloads
+        run: |
+          cd downloads
+          zip ${{ env.DEPLOY_PACKAGE }} *
+          cd ..
 
       - name: Get the version from pom.xml
         id: get_version
@@ -145,5 +148,5 @@ jobs:
           environment_name: ${{ vars.ENV_NAME }}
           version_label: 1.0.6
           region: ${{ vars.AWS_REGION }}
-          deployment_package: ${{ env.DEPLOY_PACKAGE }}
+          deployment_package: downloads/${{ env.DEPLOY_PACKAGE }}
           use_existing_version_if_available: true
