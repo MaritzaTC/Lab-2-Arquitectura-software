@@ -42,5 +42,6 @@ class Lab2ApplicationTests {
 				dataController.getRandomAviation().size();
 		assertEquals(20, aviationLength);
 	}
-
 }
+
+
