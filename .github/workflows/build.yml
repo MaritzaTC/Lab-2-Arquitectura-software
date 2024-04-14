@@ -126,8 +126,8 @@ jobs:
            name: artifact
            path: downloads
       
-      - name: Show files
-        run: ls -R
+      - name: zip artifact
+        run: zip -r ${{ env.DEPLOY_PACKAGE }} downloads
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v22
