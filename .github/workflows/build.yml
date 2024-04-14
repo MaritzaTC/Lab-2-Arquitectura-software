@@ -36,7 +36,7 @@ jobs:
 
   sonar:
     # The Sonar's Job depends on another job named "tests", which should complete before this job starts.
-    # needs: tests
+    needs: tests
 
     # Specifies that the job runs on the latest version of Ubuntu.
     runs-on: ubuntu-latest
@@ -77,7 +77,7 @@ jobs:
   #Build's job
   build:
     #Depends on sonar's job
-    # needs: sonar
+    needs: sonar
     name: Build
     #Run on Ubuntu using the latest version
     runs-on: ubuntu-latest
@@ -141,7 +141,7 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: ${{ vars.APP_NAME }}
           environment_name: ${{ vars.ENV_NAME }}
-          version_label: ${{ github.sha }}
+          version_label: ${{ github.run_id }}
           region: ${{ vars.AWS_REGION }}
           deployment_package: ${{ env.DEPLOY_PACKAGE }}
           use_existing_version_if_available: true
