@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.udea</groupId>
 	<artifactId>lab2</artifactId>
-	<version>1.0.2</version>
+	<version>1.0.4</version>
 	<name>lab2</name>
 	<description>Demo project for Spring Boot </description>
 	<properties>
