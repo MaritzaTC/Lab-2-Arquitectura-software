@@ -129,10 +129,14 @@ jobs:
       - name: zip artifact
         run: zip -r ${{ env.DEPLOY_PACKAGE }} downloads
 
+      - name: Get the version from pom.xml
+        id: get_version
+        run: echo ::set-output name=VERSION::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v22
         env:
-          VERSION: ${{ github.run_number }}
+          VERSION: ${{ github.run_number }} 1.0.1 -> 1.0.2
         with:
           aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
