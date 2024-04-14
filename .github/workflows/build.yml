@@ -130,6 +130,7 @@ jobs:
         run: |
           cd downloads
           zip ${{ env.DEPLOY_PACKAGE }} *
+          cp ${{ env.DEPLOY_PACKAGE }} ../
           cd ..
 
       - name: Get the version from pom.xml
@@ -148,5 +149,5 @@ jobs:
           environment_name: ${{ vars.ENV_NAME }}
           version_label: 1.0.6
           region: ${{ vars.AWS_REGION }}
-          deployment_package: downloads/${{ env.DEPLOY_PACKAGE }}
+          deployment_package: ${{ env.DEPLOY_PACKAGE }}
           use_existing_version_if_available: true
