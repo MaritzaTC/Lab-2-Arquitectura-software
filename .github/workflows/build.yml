@@ -108,7 +108,7 @@ jobs:
           #Set artifact name
           name: artifact
           #From this path
-          path: target/lab2-0.0.1-SNAPSHOT.jar
+          path: target/*.jar
 
   deploy:
     runs-on: ubuntu-latest
@@ -132,11 +132,11 @@ jobs:
       - name: Get the version from pom.xml
         id: get_version
         run: echo ::set-output name=VERSION::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-
+      
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v22
         env:
-          VERSION: ${{ github.run_number }} 1.0.1 -> 1.0.2
+          VERSION: ${{ steps.get_version.outputs.VERSION }} 
         with:
           aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
