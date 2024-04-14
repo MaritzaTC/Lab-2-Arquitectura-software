@@ -133,21 +133,15 @@ jobs:
           cp ${{ env.DEPLOY_PACKAGE }} ../
           cd ..
 
-      - name: Get the version from pom.xml
-        id: get_version
-        run: echo ::set-output name=VERSION::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
-      
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v22
-        env:
-          VERSION: ${{ steps.get_version.outputs.VERSION }} 
         with:
           aws_session_token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: ${{ vars.APP_NAME }}
           environment_name: ${{ vars.ENV_NAME }}
-          version_label: ${{ steps.get_version.outputs.VERSION }}
+          version_label: ${{ github.sha }}
           region: ${{ vars.AWS_REGION }}
           deployment_package: ${{ env.DEPLOY_PACKAGE }}
           use_existing_version_if_available: true
