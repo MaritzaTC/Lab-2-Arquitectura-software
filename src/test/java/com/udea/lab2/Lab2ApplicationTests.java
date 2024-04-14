@@ -18,7 +18,7 @@ class Lab2ApplicationTests {
 
 	@Test
 	void version() {
-		assertEquals( "Version is 1.0.6-alpha",
+		assertEquals( "Version is 1.0.8",
 
 				dataController.version());
 	}
